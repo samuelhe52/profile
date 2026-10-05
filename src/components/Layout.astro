@@ -1,0 +1,63 @@
+---
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import { strings, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  noindex?: boolean;
+}
+
+const { lang, title, noindex = false } = Astro.props;
+const t = strings[lang];
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const alternates = [
+  { hreflang: 'en', href: new URL('/', site).href },
+  { hreflang: 'zh-Hans', href: new URL('/zh/', site).href },
+  { hreflang: 'x-default', href: new URL('/', site).href },
+];
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: t.name,
+  alternateName: 'konakona',
+  url: site.href,
+  image: new URL('/avatar.jpg', site).href,
+  sameAs: ['https://github.com/samuelhe52', 'https://x.com/SamuelHe89', 'https://blog.konakona.dev/'],
+};
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ?? t.title}</title>
+    <meta name="description" content={t.description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f3ede1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <link rel="alternate" type="application/rss+xml" title="konakona" href={t.feedHref} />
+    <link rel="me" href="https://github.com/samuelhe52" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title ?? t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:image" content={new URL('/avatar.jpg', site).href} />
+    <meta name="twitter:card" content="summary" />
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(person)} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

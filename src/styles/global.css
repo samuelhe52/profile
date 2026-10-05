@@ -1,0 +1,566 @@
+:root {
+  --paper: #f3ede1;
+  --paper-deep: #e9e1d1;
+  --ink: #1c1a16;
+  --ink-soft: #4a4439;
+  --ink-faint: #6b6355;
+  --rule: #cfc4b0;
+  --seal: #c8402a;
+  --seal-ink: #fbf6ec;
+  --accent: #b5361f;
+
+  --serif: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
+  --sans: 'Instrument Sans Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'PingFang SC', monospace;
+
+  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --measure: 76rem;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #16140f;
+    --paper-deep: #1f1c16;
+    --ink: #ece4d4;
+    --ink-soft: #c2b8a5;
+    --ink-faint: #9b917f;
+    --rule: #3a352b;
+    --seal: #d24a31;
+    --seal-ink: #fff4e6;
+    --accent: #f07a5c;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--paper);
+  /* Paper grain: a tiled fractal-noise texture, faint enough to stay out of the way. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .38 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--seal);
+  color: var(--seal-ink);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Page frame ---------- */
+
+.page {
+  position: relative;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* A notebook margin rule running down the left edge of the content. */
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--gutter) - clamp(0.75rem, 2.5vw, 2rem));
+  width: 1px;
+  background: var(--seal);
+  opacity: 0.35;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.top a {
+  text-decoration: none;
+  color: var(--ink-faint);
+  transition: color 0.2s;
+}
+
+.top a:hover {
+  color: var(--accent);
+}
+
+.switch {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  padding: clamp(3rem, 8vw, 6.5rem) 0 clamp(3rem, 7vw, 6rem);
+}
+
+.wordmark {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(4.5rem, 15vw, 12.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+}
+
+.wordmark span {
+  display: block;
+}
+
+.wordmark .l2 {
+  padding-left: 0.62em;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.meta {
+  padding-bottom: 0.5rem;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.id {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+/* A print laid over a block of seal red, which slides out once the page settles. */
+.avatar {
+  display: block;
+  flex: none;
+  width: clamp(8rem, 13vw, 10rem);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 0.7rem;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0.6rem 0.6rem 0 var(--seal);
+  animation: print 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s both;
+}
+
+@keyframes print {
+  from {
+    box-shadow:
+      0 0 0 1px var(--rule),
+      0 0 0 var(--seal);
+  }
+}
+
+.role {
+  margin: 0.35rem 0 0;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.intro {
+  margin: 0 0 0.85rem;
+  max-width: 34ch;
+  color: var(--ink-soft);
+}
+
+:lang(zh-Hans) .intro {
+  max-width: 24em;
+}
+
+/* ---------- Sections ---------- */
+
+.block {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1rem 2rem;
+  padding: 2.75rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.label {
+  margin: 0.35rem 0 0;
+  font-weight: 500;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.label span {
+  margin-right: 0.75rem;
+  color: var(--accent);
+}
+
+.block > :not(.label) {
+  grid-column: 2;
+}
+
+/* ---------- Works ---------- */
+
+.works {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) 2rem;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px dashed var(--rule);
+}
+
+.work:first-child {
+  padding-top: 0;
+}
+
+.work:last-child {
+  border-bottom: 0;
+}
+
+.idx {
+  padding-top: 0.75rem;
+  color: var(--ink-faint);
+}
+
+.work h3 {
+  display: inline;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 2.9rem);
+  line-height: 1.1;
+}
+
+.work h3 a {
+  text-decoration: none;
+  background: linear-gradient(var(--accent), var(--accent)) left 92% / 0 1px no-repeat;
+  transition:
+    background-size 0.35s ease,
+    color 0.2s;
+}
+
+/* The project name's link covers the whole row; secondary links sit above it. */
+.stretch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.work:hover h3 a,
+.work h3 a:focus-visible {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+.kind {
+  display: inline-block;
+  margin: 0 0 0 0.9rem;
+  color: var(--ink-faint);
+  vertical-align: 0.6em;
+}
+
+.desc {
+  margin: 0.4rem 0 0;
+  max-width: 52ch;
+  color: var(--ink-soft);
+}
+
+.sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sub a {
+  position: relative;
+  z-index: 1;
+  color: var(--ink-faint);
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--rule);
+  transition: color 0.2s;
+}
+
+.sub a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.arrow {
+  padding-top: 0.6rem;
+  font-size: 1.4rem;
+  color: var(--ink-faint);
+  transition:
+    transform 0.3s ease,
+    color 0.2s;
+}
+
+.work:hover .arrow {
+  color: var(--accent);
+  transform: translate(0.2rem, -0.2rem);
+}
+
+/* ---------- Writing ---------- */
+
+.posts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.posts li {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.6rem 0;
+}
+
+.posts time {
+  color: var(--ink-faint);
+}
+
+.posts a {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+:lang(zh-Hans) .posts a {
+  font-size: 1.25rem;
+}
+
+.posts a:hover {
+  color: var(--accent);
+}
+
+.empty {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.more {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.25rem 0 0;
+}
+
+.more a {
+  color: var(--ink-faint);
+  text-underline-offset: 0.25em;
+}
+
+.more a:hover {
+  color: var(--accent);
+}
+
+/* ---------- Elsewhere ---------- */
+
+.elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.elsewhere a {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.75rem, 3.4vw, 2.4rem);
+  text-decoration: none;
+  background: linear-gradient(var(--rule), var(--rule)) left 88% / 100% 1px no-repeat;
+  transition:
+    color 0.2s,
+    background-image 0.2s;
+}
+
+.elsewhere a:hover {
+  color: var(--accent);
+  background-image: linear-gradient(var(--accent), var(--accent));
+}
+
+:lang(zh-Hans) .elsewhere a {
+  font-style: normal;
+}
+
+/* ---------- Footer ---------- */
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+}
+
+.colophon p {
+  margin: 0;
+}
+
+.colophon a {
+  color: inherit;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--rule);
+}
+
+.colophon a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+/* ---------- 404 ---------- */
+
+.lost {
+  padding: clamp(4rem, 14vw, 10rem) 0;
+}
+
+.lost h1 {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 1;
+}
+
+.lost p {
+  max-width: 40ch;
+  color: var(--ink-soft);
+}
+
+.lost a {
+  color: var(--accent);
+  text-underline-offset: 0.25em;
+}
+
+/* ---------- Load sequence ---------- */
+
+.rise {
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--d, 0) * 90ms);
+}
+
+.d1 { --d: 1; }
+.d3 { --d: 3; }
+.d4 { --d: 4; }
+.d5 { --d: 5; }
+.d6 { --d: 6; }
+.d7 { --d: 7; }
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .id {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .avatar {
+    width: 6rem;
+    box-shadow:
+      0 0 0 1px var(--rule),
+      0.4rem 0.4rem 0 var(--seal);
+  }
+
+
+  .block {
+    grid-template-columns: 1fr;
+  }
+
+  .block > :not(.label) {
+    grid-column: 1;
+  }
+
+  .work {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  .kind {
+    display: block;
+    margin: 0.2rem 0 0;
+    vertical-align: baseline;
+  }
+
+  .posts li {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}

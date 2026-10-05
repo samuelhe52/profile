@@ -1,0 +1,17 @@
+---
+import Layout from '../components/Layout.astro';
+import { strings } from '../i18n';
+
+const { en, zh } = strings;
+---
+
+<Layout lang="en" title="404 — konakona" noindex>
+  <div class="page">
+    <main class="lost">
+      <h1>{en.notFound.title}</h1>
+      <p>{en.notFound.body} {en.notFound.moved} <a href="https://blog.konakona.dev/en/">blog.konakona.dev</a>.</p>
+      <p lang="zh-Hans">{zh.notFound.body}{zh.notFound.moved} <a href="https://blog.konakona.dev/zh/">blog.konakona.dev</a>。</p>
+      <p><a href="/">{en.notFound.home}</a> · <a href="/zh/" lang="zh-Hans">{zh.notFound.home}</a></p>
+    </main>
+  </div>
+</Layout>
