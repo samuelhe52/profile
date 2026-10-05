@@ -56,6 +56,11 @@ body {
   line-height: 1.6;
 }
 
+html:lang(zh-Hans) body {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  line-height: 1.75;
+}
+
 a {
   color: inherit;
 }
