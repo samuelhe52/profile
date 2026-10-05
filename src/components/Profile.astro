@@ -98,7 +98,9 @@ const external = (href: string) => !href.startsWith('mailto:');
                 <time class="mono" datetime={isoDate(p.date)}>
                   {isoDate(p.date)}
                 </time>
-                <a href={p.href}>{p.title}</a>
+                <a href={p.href}>
+                  <span>{p.title}</span>
+                </a>
               </li>
             ))}
           </ol>

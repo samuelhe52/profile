@@ -372,11 +372,14 @@ a {
   font-size: 1.45rem;
   line-height: 1.3;
   text-decoration: none;
-  /* Same sweep as the project names; it runs across each wrapped line in turn. */
+  transition: color 0.2s;
+}
+
+/* The link is a grid item and so always a block; the inner span stays inline,
+   letting the sweep follow the text across each wrapped line in turn. */
+.posts a span {
   background: linear-gradient(var(--accent), var(--accent)) left 92% / 0 1px no-repeat;
-  transition:
-    background-size 0.35s ease,
-    color 0.2s;
+  transition: background-size 0.35s ease;
 }
 
 :lang(zh-Hans) .posts a {
@@ -386,6 +389,10 @@ a {
 .posts a:hover,
 .posts a:focus-visible {
   color: var(--accent);
+}
+
+.posts a:hover span,
+.posts a:focus-visible span {
   background-size: 100% 1px;
 }
 
