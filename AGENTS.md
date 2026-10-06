@@ -1,4 +1,4 @@
-# personal-profile agent notes
+# profile agent notes
 
 See `README.md` for commands and layout. These rules aren't obvious from the code:
 

@@ -35,7 +35,7 @@ export interface Strings {
 
 const GITHUB = 'https://github.com/samuelhe52';
 const EMAIL = 'samuelhe52@outlook.com';
-export const REPO = `${GITHUB}/personal-profile`;
+export const REPO = `${GITHUB}/profile`;
 
 export const strings: Record<Lang, Strings> = {
   en: {

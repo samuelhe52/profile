@@ -1,4 +1,4 @@
-# personal-profile
+# profile
 
 Personal profile site for konakona (Samuel He), served at <https://konakona.dev>.
 It's a static [Astro](https://astro.build) site with English (`/`) and
